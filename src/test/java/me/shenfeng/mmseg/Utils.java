@@ -3,6 +3,7 @@ package me.shenfeng.mmseg;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Arrays;
 
 public class Utils {
@@ -18,8 +19,10 @@ public class Utils {
         long total = rt.totalMemory();
         long free = rt.freeMemory();
         long max = rt.maxMemory();
-        System.out.println(String.format("total=%d, free=%d, max=%d, use=%d",
-                total / 1024, free / 1024, max / 1024, (total - free) / 1024));
+        System.out
+                .println(String.format("total=%d, free=%d, max=%d, use=%d",
+                        total / 1024, free / 1024, max / 1024,
+                        (total - free) / 1024));
     }
 
     public static char[] getChars(String str) {
@@ -39,8 +42,8 @@ public class Utils {
         return Arrays.copyOf(chars, count);
     }
 
-    public static char[] getCharsFromResource(String name) throws IOException {
-        String file = Utils.class.getClassLoader().getResource(name).getFile();
-        return getChars(new File(file));
+    public static char[] getCharsFromResource(String file) throws IOException {
+        URL url = Utils.class.getClassLoader().getResource(file);
+        return getChars(new File(url.getFile()));
     }
 }

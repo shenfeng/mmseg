@@ -73,9 +73,14 @@ class HashSet {
         int i = w.hashCode() % prime;
         Object val = data[i];
         if (val == null) {
-            data[i] = new Word[] { w };
-        } else { // array
-            Word[] arr = (Word[]) val;
+            data[i] = w;
+        } else {
+            Word[] arr;
+            if (val instanceof Word) {
+                arr = new Word[] { (Word) val };
+            } else {
+                arr = (Word[]) val;
+            }
             arr = Arrays.copyOf(arr, arr.length + 1);
             arr[arr.length - 1] = w;
             data[i] = arr;
@@ -86,6 +91,8 @@ class HashSet {
         Counter c = new Counter();
         for (Object slot : data) {
             if (slot == null) {
+                c.add(0);
+            } else if (slot instanceof Word) {
                 c.add(1);
             } else {
                 c.add(((Word[]) slot).length);
@@ -97,7 +104,9 @@ class HashSet {
     public boolean contains(Word w) {
         int i = w.hashCode() % prime;
         Object val = data[i];
-        if (val != null) {
+        if (val instanceof Word) {
+            return w.equals(val);
+        } else if (val instanceof Word[]) {
             Word arr[] = (Word[]) val;
             for (Word word : arr) {
                 if (word.equals(w)) {
@@ -105,6 +114,7 @@ class HashSet {
                 }
             }
         }
+
         return false;
     }
 
