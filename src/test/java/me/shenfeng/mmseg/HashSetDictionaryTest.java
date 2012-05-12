@@ -20,7 +20,7 @@ public class HashSetDictionaryTest {
         Utils.printMemory();
         Utils.printMemory();
         Utils.printMemory();
-        URL url = SimpleMMsegTest.class.getClassLoader().getResource(
+        URL url = HashSetDictionaryTest.class.getClassLoader().getResource(
                 "data/words.dic");
         dict = new HashSetDictionary(new File(url.getFile()));
         printMemory();

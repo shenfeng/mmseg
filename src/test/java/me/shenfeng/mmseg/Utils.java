@@ -3,6 +3,8 @@ package me.shenfeng.mmseg;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
 import java.net.URL;
 import java.util.Arrays;
 
@@ -45,5 +47,19 @@ public class Utils {
     public static char[] getCharsFromResource(String file) throws IOException {
         URL url = Utils.class.getClassLoader().getResource(file);
         return getChars(new File(url.getFile()));
+    }
+
+    public static Reader getReader(String str) throws IOException {
+        return new StringReader(str);
+    }
+
+    public static Reader getReader(File file) throws IOException {
+        return new FileReader(file);
+    }
+
+    public static Reader getReaderFromResource(String file)
+            throws IOException {
+        URL url = Utils.class.getClassLoader().getResource(file);
+        return getReader(new File(url.getFile()));
     }
 }

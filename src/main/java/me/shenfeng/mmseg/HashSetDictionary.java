@@ -62,7 +62,7 @@ class Word {
 class HashSet {
 
     private Object[] data;
-    private int prime;
+    final int prime;
 
     public HashSet(int count) {
         prime = getPrime(count);
@@ -120,7 +120,7 @@ class HashSet {
 
     private int getPrime(int n) {
         int prev = 0;
-        BigInteger b = BigInteger.valueOf(n / 2);
+        BigInteger b = BigInteger.valueOf(n);
         int prime = 0;
         int max = n + n / 2;
         while ((prime = b.nextProbablePrime().intValue()) < max) {
@@ -181,9 +181,11 @@ public class HashSetDictionary implements Dictionary {
             Word w = new Word(buffer, offsets[i], lengths[i]);
             set.insert(w);
         }
-        logger.trace("max word length: " + maxWordLength);
         long time = System.currentTimeMillis() - start;
-        logger.info("init takes: {} ms", time, set.getLoad());
+        logger.info(
+                "load: {}ms, word: {}, max word length: {}, bucket: {}, hash: {}",
+                new Object[] { time, wordIdx, maxWordLength, set.prime,
+                        set.getLoad() });
     }
 
     public int maxMath(char[] sen, int offset, int length) {
