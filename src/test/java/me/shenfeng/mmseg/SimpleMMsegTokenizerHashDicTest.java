@@ -11,12 +11,12 @@ import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.junit.Test;
 
-public class SimpleMMsegTokenizerTest {
+public class SimpleMMsegTokenizerHashDicTest {
 
     Dictionary dic;
 
-    public SimpleMMsegTokenizerTest() throws IOException {
-        URL url = SimpleMMsegTokenizerTest.class.getClassLoader()
+    public SimpleMMsegTokenizerHashDicTest() throws IOException {
+        URL url = SimpleMMsegTokenizerHashDicTest.class.getClassLoader()
                 .getResource("data/words.dic");
         dic = new HashSetDictionary(new File(url.getFile()));
     }

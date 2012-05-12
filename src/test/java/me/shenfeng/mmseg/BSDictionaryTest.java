@@ -1,0 +1,35 @@
+package me.shenfeng.mmseg;
+
+import static me.shenfeng.mmseg.Utils.getChars;
+import static me.shenfeng.mmseg.Utils.printMemory;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+public class BSDictionaryTest {
+    Dictionary dict;
+
+    @Before
+    public void setup() throws IOException {
+        Utils.printMemory();
+        Utils.printMemory();
+        Utils.printMemory();
+        URL url = BSDictionaryTest.class.getClassLoader().getResource(
+                "data/words.dic");
+        dict = new BSDictionary(new File(url.getFile()));
+        printMemory();
+        Utils.printMemory();
+    }
+
+    @Test
+    public void test2() {
+        int n = 8;
+        String str = "一个国家两种制度111";
+        Assert.assertEquals(n, dict.maxMath(getChars(str), 0, str.length()));
+    }
+}
