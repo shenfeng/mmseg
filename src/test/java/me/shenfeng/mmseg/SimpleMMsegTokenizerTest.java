@@ -2,10 +2,9 @@ package me.shenfeng.mmseg;
 
 import static me.shenfeng.mmseg.Utils.getReaderFromResource;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
-import java.net.URL;
 
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
@@ -21,10 +20,12 @@ public class SimpleMMsegTokenizerTest {
 
     @BeforeClass
     public static void loadDic() throws IOException {
-        URL url = SimpleMMsegTokenizerTest.class.getClassLoader()
-                .getResource("data/words.dic");
-        bsDic = new BSDictionary(new File(url.getFile()));
-        hashDic = new HashSetDictionary(new File(url.getFile()));
+        InputStream is = SimpleMMsegTokenizerTest.class.getClassLoader()
+                .getResourceAsStream("data/words.dic");
+        InputStream is2 = SimpleMMsegTokenizerTest.class.getClassLoader()
+                .getResourceAsStream("data/words.dic");
+        bsDic = new BSDictionary(is);
+        hashDic = new HashSetDictionary(is2);
     }
 
     // test to see if they are the same

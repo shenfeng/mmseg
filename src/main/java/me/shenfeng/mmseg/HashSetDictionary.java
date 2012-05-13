@@ -1,8 +1,8 @@
 package me.shenfeng.mmseg;
 
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -102,19 +102,19 @@ class HashSet {
 public class HashSetDictionary implements Dictionary {
     private Logger logger = LoggerFactory.getLogger(HashSetDictionary.class);
 
-    public HashSetDictionary(File file) throws IOException {
-        load(file);
+    public HashSetDictionary(InputStream is) throws IOException {
+        load(is);
     }
 
     private int maxWordLength = 0;
     private HashSet set;
 
-    private void load(File file) throws IOException {
+    private void load(InputStream file) throws IOException {
         long start = System.currentTimeMillis();
         char buffer[] = new char[1024 * 768];
         int offsets[] = new int[1024 * 40];
         int lengths[] = new int[1024 * 40];
-        FileReader fr = new FileReader(file);
+        InputStreamReader fr = new InputStreamReader(file);
         int charIdx = 0;
         int wordIdx = 0;
         int length = 0;

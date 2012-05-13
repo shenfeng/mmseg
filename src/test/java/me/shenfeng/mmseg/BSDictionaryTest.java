@@ -3,9 +3,8 @@ package me.shenfeng.mmseg;
 import static me.shenfeng.mmseg.Utils.getChars;
 import static me.shenfeng.mmseg.Utils.printMemory;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
+import java.io.InputStream;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -19,9 +18,9 @@ public class BSDictionaryTest {
         Utils.printMemory();
         Utils.printMemory();
         Utils.printMemory();
-        URL url = BSDictionaryTest.class.getClassLoader().getResource(
-                "data/words.dic");
-        dict = new BSDictionary(new File(url.getFile()));
+        InputStream is = BSDictionaryTest.class.getClassLoader()
+                .getResourceAsStream("data/words.dic");
+        dict = new BSDictionary(is);
         printMemory();
         Utils.printMemory();
     }

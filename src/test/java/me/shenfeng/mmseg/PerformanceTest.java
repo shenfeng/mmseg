@@ -1,7 +1,7 @@
 package me.shenfeng.mmseg;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Reader;
 import java.util.Arrays;
 
@@ -46,7 +46,8 @@ class CharReader extends Reader {
 
 public class PerformanceTest {
 
-    private static Logger logger = LoggerFactory.getLogger(PerformanceTest.class);
+    private static Logger logger = LoggerFactory
+            .getLogger(PerformanceTest.class);
 
     char[] data;
     Dictionary bs;
@@ -54,8 +55,11 @@ public class PerformanceTest {
 
     @Before
     public void setup() throws IOException {
-        File file = new File(PerformanceTest.class.getClassLoader()
-                .getResource("data/words.dic").getFile());
+        InputStream is = PerformanceTest.class.getClassLoader()
+                .getResourceAsStream("data/words.dic");
+
+        InputStream is2 = PerformanceTest.class.getClassLoader()
+                .getResourceAsStream("data/words.dic");
 
         char[] book1 = Utils.getCharsFromResource("book1.txt");
         char[] book2 = Utils.getCharsFromResource("book2.txt");
@@ -64,8 +68,8 @@ public class PerformanceTest {
         data = Arrays.copyOf(book1, book1.length + book2.length);
         System.arraycopy(book2, 0, data, book1.length - 1, book2.length);
 
-        hash = new HashSetDictionary(file);
-        bs = new BSDictionary(file);
+        hash = new HashSetDictionary(is);
+        bs = new BSDictionary(is2);
     }
 
     @Test
