@@ -16,21 +16,35 @@ import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 
 public final class SimpleMMsegTokenizer extends Tokenizer {
 
+    static final int EN = 1;
+    static final int ZH = 2;
+    static final int UNKNOW = 3;
+
     char[] buffer = new char[32]; // 32 for Chinese sentence, max en word
     int bufferIdx = 0;
     int bufferStart = 0;
+    private int lastType;
 
     int idx = 0; // reader index
-
     int read; // current read from reader
 
     private Dictionary dic;
 
-    private int lastType;
     private PushbackReader reader;
 
     private CharTermAttribute termAtt;
     private OffsetAttribute offsetAtt;
+    private boolean lowercase = true;
+
+    private static int type(int ch) {
+        int t = Character.getType(ch);
+        if (t == OTHER_LETTER) {
+            return ZH;
+        } else if (t == LOWERCASE_LETTER || t == UPPERCASE_LETTER) {
+            return EN;
+        }
+        return UNKNOW;
+    }
 
     public SimpleMMsegTokenizer(Dictionary dic, Reader input) {
         super(input);
@@ -44,6 +58,12 @@ public final class SimpleMMsegTokenizer extends Tokenizer {
         offsetAtt = addAttribute(OffsetAttribute.class);
     }
 
+    public SimpleMMsegTokenizer(Dictionary dic, Reader input,
+            boolean lowercase) {
+        this(dic, input);
+        this.lowercase = lowercase;
+    }
+
     public void addToBuffer(int read) {
         if (buffer.length == bufferIdx) {
             buffer = Arrays.copyOf(buffer, bufferIdx * 2);
@@ -53,7 +73,7 @@ public final class SimpleMMsegTokenizer extends Tokenizer {
 
     private void advance() throws IOException {
         while ((read = reader.read()) != -1) {
-            if (getType(read) == lastType) {
+            if (type(read) == lastType) {
                 ++idx; // advance reader index
                 addToBuffer(read);
             } else {
@@ -73,8 +93,14 @@ public final class SimpleMMsegTokenizer extends Tokenizer {
     }
 
     public void nextEn() {
-        termAtt.copyBuffer(buffer, bufferStart, bufferIdx - bufferStart);
-        offsetAtt.setOffset(idx - (bufferIdx - bufferStart), idx);
+        if (lowercase) {
+            for (int i = bufferStart; i < bufferIdx; i++) {
+                buffer[i] = Character.toLowerCase(buffer[i]);
+            }
+        }
+        int length = bufferIdx - bufferStart;
+        termAtt.copyBuffer(buffer, bufferStart, length);
+        offsetAtt.setOffset(idx - length, idx);
         bufferIdx = bufferStart = 0; // clear
     }
 
@@ -89,15 +115,17 @@ public final class SimpleMMsegTokenizer extends Tokenizer {
 
         while ((read = reader.read()) != -1) {
             ++idx;
-            lastType = getType(read);
-            switch (lastType) {
+            int type = getType(read);
+            switch (type) {
             case OTHER_LETTER: // Chinese, etc
+                lastType = ZH;
                 addToBuffer(read);
                 advance();
                 nextCh();
                 return true;
             case UPPERCASE_LETTER:
             case LOWERCASE_LETTER:
+                lastType = EN;
                 addToBuffer(read);
                 advance();
                 nextEn();

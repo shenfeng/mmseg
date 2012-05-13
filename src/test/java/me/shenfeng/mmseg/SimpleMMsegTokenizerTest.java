@@ -96,6 +96,7 @@ public class SimpleMMsegTokenizerTest {
         print("今天真热，是游泳的好日子");
         print("小明把大便当作每天早上起床第一件要做的事");
         print("老师说明天每个人参加大队接力时，一定要尽力");
+        print("This IS a test");
     }
 
     @Test
