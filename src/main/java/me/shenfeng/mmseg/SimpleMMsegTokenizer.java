@@ -14,7 +14,7 @@ import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 
-public class SimpleMMsegTokenizer extends Tokenizer {
+public final class SimpleMMsegTokenizer extends Tokenizer {
 
     char[] buffer = new char[32]; // 32 for Chinese sentence, max en word
     int bufferIdx = 0;

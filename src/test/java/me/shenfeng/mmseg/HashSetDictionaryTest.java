@@ -24,7 +24,7 @@ public class HashSetDictionaryTest {
                 "data/words.dic");
         dict = new HashSetDictionary(new File(url.getFile()));
         printMemory();
-        Utils.printMemory();
+        printMemory();
     }
 
     @Test

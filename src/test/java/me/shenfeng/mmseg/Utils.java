@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.Arrays;
 
 public class Utils {
+
     public static void printMemory() {
         for (int i = 0; i < 4; ++i) {
             System.gc();
@@ -22,9 +23,10 @@ public class Utils {
         long free = rt.freeMemory();
         long max = rt.maxMemory();
         System.out
-                .println(String.format("total=%d, free=%d, max=%d, use=%d",
-                        total / 1024, free / 1024, max / 1024,
-                        (total - free) / 1024));
+                .println(String
+                        .format("Memory Usage: total=%dk, free=%dk, max=%dk, use=%dk",
+                                total / 1024, free / 1024, max / 1024,
+                                (total - free) / 1024));
     }
 
     public static char[] getChars(String str) {

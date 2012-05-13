@@ -5,9 +5,28 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+class Counter {
+
+    private HashMap<Object, Integer> counter = new HashMap<Object, Integer>();
+
+    public void add(Object key) {
+        Integer i = counter.get(key);
+        if (i == null) {
+            i = 0;
+        }
+        i++;
+        counter.put(key, i);
+    }
+
+    public String toString() {
+        return counter.toString();
+    }
+}
 
 class HashSet {
     private Object[] data;
