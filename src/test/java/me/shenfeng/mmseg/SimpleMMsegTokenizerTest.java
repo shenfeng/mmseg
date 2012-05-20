@@ -97,6 +97,7 @@ public class SimpleMMsegTokenizerTest {
         print("小明把大便当作每天早上起床第一件要做的事");
         print("老师说明天每个人参加大队接力时，一定要尽力");
         print("This IS a test");
+        print("neo4j: World's Leading Graph Database");
     }
 
     @Test

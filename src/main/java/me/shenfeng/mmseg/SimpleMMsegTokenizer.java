@@ -1,9 +1,9 @@
 package me.shenfeng.mmseg;
 
+import static java.lang.Character.DECIMAL_DIGIT_NUMBER;
 import static java.lang.Character.LOWERCASE_LETTER;
 import static java.lang.Character.OTHER_LETTER;
 import static java.lang.Character.UPPERCASE_LETTER;
-import static java.lang.Character.getType;
 
 import java.io.IOException;
 import java.io.PushbackReader;
@@ -23,7 +23,7 @@ public final class SimpleMMsegTokenizer extends Tokenizer {
     char[] buffer = new char[32]; // 32 for Chinese sentence, max en word
     int bufferIdx = 0;
     int bufferStart = 0;
-    private int lastType;
+    private int lastType = EN;
 
     int idx = 0; // reader index
     int read; // current read from reader
@@ -36,12 +36,14 @@ public final class SimpleMMsegTokenizer extends Tokenizer {
     private OffsetAttribute offsetAtt;
     private boolean lowercase = true;
 
-    private static int type(int ch) {
+    private int type(int ch) {
         int t = Character.getType(ch);
         if (t == OTHER_LETTER) {
             return ZH;
         } else if (t == LOWERCASE_LETTER || t == UPPERCASE_LETTER) {
             return EN;
+        } else if (t == DECIMAL_DIGIT_NUMBER) {
+            return lastType;
         }
         return UNKNOW;
     }
@@ -115,17 +117,14 @@ public final class SimpleMMsegTokenizer extends Tokenizer {
 
         while ((read = reader.read()) != -1) {
             ++idx;
-            int type = getType(read);
-            switch (type) {
-            case OTHER_LETTER: // Chinese, etc
-                lastType = ZH;
+            lastType = type(read);
+            switch (lastType) {
+            case ZH: // Chinese, etc
                 addToBuffer(read);
                 advance();
                 nextCh();
                 return true;
-            case UPPERCASE_LETTER:
-            case LOWERCASE_LETTER:
-                lastType = EN;
+            case EN:
                 addToBuffer(read);
                 advance();
                 nextEn();
