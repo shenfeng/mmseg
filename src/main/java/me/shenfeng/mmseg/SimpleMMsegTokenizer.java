@@ -43,7 +43,12 @@ public final class SimpleMMsegTokenizer extends Tokenizer {
         } else if (t == LOWERCASE_LETTER || t == UPPERCASE_LETTER) {
             return EN;
         } else if (t == DECIMAL_DIGIT_NUMBER) {
-            return lastType;
+            if (lastType == UNKNOW) {
+                // in case detail_2012, 2012 should be a word
+                return EN;
+            } else {
+                return lastType;
+            }
         }
         return UNKNOW;
     }

@@ -89,6 +89,8 @@ public class SimpleMMsegTokenizerTest {
 
     @Test
     public void test1() throws IOException {
+        // detail|2012|09|06|17404564|0|shtm
+        print("detail_2012_09/06/17404564_0.shtml");
         print("研究生命起源");
         print("化装和服装");
         print("眼看就要来了");
