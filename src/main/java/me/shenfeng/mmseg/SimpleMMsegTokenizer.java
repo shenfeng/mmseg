@@ -6,9 +6,9 @@ import static java.lang.Character.OTHER_LETTER;
 import static java.lang.Character.UPPERCASE_LETTER;
 
 import java.io.IOException;
-import java.io.PushbackReader;
 import java.io.Reader;
 import java.util.Arrays;
+import java.io.PushbackReader;
 
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;

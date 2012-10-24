@@ -4,7 +4,6 @@ import static me.shenfeng.mmseg.Utils.getReaderFromResource;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringReader;
 
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
@@ -130,4 +129,15 @@ public class SimpleMMsegTokenizerTest {
                 hashDic, Utils.getReader(str));
         test(bsTokenizer, hashTokenizer);
     }
+
+    @Test
+    public void testFile() throws IOException {
+        String str = new String(Utils.getCharsFromResource("book1.txt"));
+        SimpleMMsegTokenizer bsTokenizer = new SimpleMMsegTokenizer(bsDic,
+                Utils.getReader(str));
+        SimpleMMsegTokenizer hashTokenizer = new SimpleMMsegTokenizer(
+                hashDic, Utils.getReader(str));
+        test(bsTokenizer, hashTokenizer); // they are the same
+    }
+
 }
