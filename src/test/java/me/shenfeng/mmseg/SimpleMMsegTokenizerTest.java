@@ -90,11 +90,13 @@ public class SimpleMMsegTokenizerTest {
     public void test1() throws IOException {
         // detail|2012|09|06|17404564|0|shtm
         print("detail_2012_09/06/17404564_0.shtml");
-        print("研究生命起源");
+        print("研究生命起源.a.abc.");
+        print("neo4j version 3.4.5");
         print("化装和服装");
         print("眼看就要来了");
         print("朋友真背叛了你了");
         print("今天真热，是游泳的好日子");
+        print("《卫报》图说24小时（2012年6月27日）");
         print("小明把大便当作每天早上起床第一件要做的事");
         print("老师说明天每个人参加大队接力时，一定要尽力");
         print("This IS a test");

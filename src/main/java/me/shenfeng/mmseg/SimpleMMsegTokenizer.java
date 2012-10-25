@@ -37,18 +37,20 @@ public final class SimpleMMsegTokenizer extends Tokenizer {
     private boolean lowercase = true;
 
     private int type(int ch) {
+
+        // 3.4.5 => version string
+        if (ch == '.'
+                && bufferIdx > 0
+                && Character.getType(buffer[bufferIdx - 1]) == DECIMAL_DIGIT_NUMBER) {
+            return EN;
+        }
+
         int t = Character.getType(ch);
         if (t == OTHER_LETTER) {
             return ZH;
-        } else if (t == LOWERCASE_LETTER || t == UPPERCASE_LETTER) {
+        } else if (t == LOWERCASE_LETTER || t == UPPERCASE_LETTER
+                || t == DECIMAL_DIGIT_NUMBER) {
             return EN;
-        } else if (t == DECIMAL_DIGIT_NUMBER) {
-            if (lastType == UNKNOW) {
-                // in case detail_2012, 2012 should be a word
-                return EN;
-            } else {
-                return lastType;
-            }
         }
         return UNKNOW;
     }
