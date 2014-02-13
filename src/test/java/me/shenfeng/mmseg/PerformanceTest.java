@@ -1,9 +1,5 @@
 package me.shenfeng.mmseg;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
-
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
@@ -11,6 +7,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
 
 public class PerformanceTest {
 
@@ -58,7 +58,7 @@ public class PerformanceTest {
         SimpleMMsegTokenizer tokenizer = new SimpleMMsegTokenizer(hash,
                 new StringReader(datastr));
         loopResult(tokenizer, hash, true);
-        for (int i = 0; i < 30; ++i) {
+        for (int i = 0; i < 3; ++i) {
             tokenizer = new SimpleMMsegTokenizer(bs,
                     new StringReader(datastr));
             loopResult(tokenizer, bs, true);
@@ -82,8 +82,8 @@ public class PerformanceTest {
         if (print) {
             long time = System.currentTimeMillis() - start;
             logger.info("Dictionary: {} takes {}ms to seg {} char",
-                    new Object[] { dic.getClass().getSimpleName(), time,
-                            data.length });
+                    new Object[]{dic.getClass().getSimpleName(), time,
+                            data.length});
 
         }
         return i; // prevent jit
