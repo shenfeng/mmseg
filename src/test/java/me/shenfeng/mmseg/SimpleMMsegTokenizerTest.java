@@ -16,6 +16,8 @@ public class SimpleMMsegTokenizerTest {
 
     static Dictionary bsDic;
     static Dictionary hashDic;
+    static Dictionary trieDic;
+    private static Dictionary trie2Dic;
 
     @BeforeClass
     public static void loadDic() throws IOException {
@@ -23,7 +25,14 @@ public class SimpleMMsegTokenizerTest {
                 .getResourceAsStream("data/words.dic");
         InputStream is2 = SimpleMMsegTokenizerTest.class.getClassLoader()
                 .getResourceAsStream("data/words.dic");
+        InputStream is3 = SimpleMMsegTokenizerTest.class.getClassLoader()
+                .getResourceAsStream("data/words.dic");
+        InputStream is4 = SimpleMMsegTokenizerTest.class.getClassLoader()
+                .getResourceAsStream("data/words.dic");
+
         bsDic = new BSDictionary(is);
+        trieDic = new TrieDictionary(is3);
+        trie2Dic = new TrieDictionary(is4);
         hashDic = new HashSetDictionary(is2);
     }
 
@@ -32,7 +41,8 @@ public class SimpleMMsegTokenizerTest {
         String prevWord = null;
         int prevStart = -1, prevEnd = -1;
         int i = 0;
-        outer: while (true) {
+        outer:
+        while (true) {
             for (Tokenizer tokenizer : tokenizers) {
                 CharTermAttribute termAtt = tokenizer
                         .getAttribute(CharTermAttribute.class);
@@ -74,7 +84,7 @@ public class SimpleMMsegTokenizerTest {
 
     private void print(String input) throws IOException {
         StringBuilder sb = new StringBuilder();
-        SimpleMMsegTokenizer tokenizer = new SimpleMMsegTokenizer(hashDic,
+        SimpleMMsegTokenizer tokenizer = new SimpleMMsegTokenizer(trie2Dic,
                 new StringReader(input));
 
         CharTermAttribute termAtt = tokenizer
@@ -109,7 +119,14 @@ public class SimpleMMsegTokenizerTest {
                 getReaderFromResource("hlby1.txt"));
         SimpleMMsegTokenizer hashTokenizer = new SimpleMMsegTokenizer(
                 hashDic, getReaderFromResource("hlby1.txt"));
-        test(bsTokenizer, hashTokenizer);
+        SimpleMMsegTokenizer trieTokenizer = new SimpleMMsegTokenizer(
+                trieDic, getReaderFromResource("hlby1.txt"));
+        SimpleMMsegTokenizer trie2Tokenizer = new SimpleMMsegTokenizer(
+                trie2Dic, getReaderFromResource("hlby1.txt"));
+
+
+        test(bsTokenizer, hashTokenizer, trieTokenizer, trie2Tokenizer);
+//        test(bsTokenizer, trieTokenizer);
     }
 
     @Test

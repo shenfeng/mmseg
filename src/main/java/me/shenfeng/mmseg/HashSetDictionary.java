@@ -150,16 +150,16 @@ public class HashSetDictionary implements Dictionary {
             set.insert(w);
         }
         long time = System.currentTimeMillis() - start;
-        logger.info(
-                "load: {}ms, word: {}, max word length: {}, bucket: {}, hash: {}",
-                new Object[] { time, wordIdx, maxWordLength, set.prime,
-                        set.getLoad() });
+//        logger.info(
+//                "load: {}ms, word: {}, max word length: {}, bucket: {}, hash: {}",
+//                new Object[] { time, wordIdx, maxWordLength, set.prime,
+//                        set.getLoad() });
     }
 
-    public int maxMath(char[] sen, int offset, int length) {
+    public int maxMath(char[] buffer, int offset, int length) {
         int maxLength = Math.min(length, maxWordLength);
         for (int i = maxLength; i > 1; --i) {
-            Word w = new Word(sen, offset, i);
+            Word w = new Word(buffer, offset, i);
             if (set.contains(w)) {
                 return i;
             }

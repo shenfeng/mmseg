@@ -17,9 +17,10 @@ public class PerformanceTest {
     private static Logger logger = LoggerFactory
             .getLogger(PerformanceTest.class);
 
-    char[] data;
+
     String datastr;
     Dictionary bs;
+    Dictionary trie;
     Dictionary hash;
 
     @Before
@@ -30,33 +31,55 @@ public class PerformanceTest {
         InputStream is2 = PerformanceTest.class.getClassLoader()
                 .getResourceAsStream("data/words.dic");
 
+        InputStream is3 = PerformanceTest.class.getClassLoader()
+                .getResourceAsStream("data/words.dic");
+
+        InputStream is4 = PerformanceTest.class.getClassLoader()
+                .getResourceAsStream("data/words.dic");
+
+
+        datastr = getBook();
+
+        hash = new HashSetDictionary(is);
+        bs = new BSDictionary(is2);
+        trie = new TrieDictionary(is3);
+//        new me.shenfeng.mmseg.Trie2Dictionary(is4);
+    }
+
+    public static String getBook() throws IOException {
         char[] book1 = Utils.getCharsFromResource("book1.txt");
         char[] book2 = Utils.getCharsFromResource("book2.txt");
 
         // copy as one array
-        data = Arrays.copyOf(book1, book1.length + book2.length);
+        char[] data = Arrays.copyOf(book1, book1.length + book2.length);
         System.arraycopy(book2, 0, data, book1.length - 1, book2.length);
 
-        datastr = new String(data);
-
-        hash = new HashSetDictionary(is);
-        bs = new BSDictionary(is2);
+        return new String(data);
     }
 
     @Test
     public void testPerf() throws IOException {
         logger.info("Warm up");
-        for (int i = 0; i < 3; i++) { // warm up
+        for (int i = 0; i < 10; i++) { // warm up
+
+            boolean p = true;
             SimpleMMsegTokenizer tokenizer = new SimpleMMsegTokenizer(hash,
                     new StringReader(datastr));
-            loopResult(tokenizer, hash, false);
+            loopResult(tokenizer, hash, p);
+
             tokenizer = new SimpleMMsegTokenizer(bs,
                     new StringReader(datastr));
-            loopResult(tokenizer, hash, false);
+            loopResult(tokenizer, bs, p);
+
+            tokenizer = new SimpleMMsegTokenizer(trie,
+                    new StringReader(datastr));
+            loopResult(tokenizer, trie, p);
+
         }
 
         SimpleMMsegTokenizer tokenizer = new SimpleMMsegTokenizer(hash,
                 new StringReader(datastr));
+
         loopResult(tokenizer, hash, true);
         for (int i = 0; i < 3; ++i) {
             tokenizer = new SimpleMMsegTokenizer(bs,
@@ -83,7 +106,8 @@ public class PerformanceTest {
             long time = System.currentTimeMillis() - start;
             logger.info("Dictionary: {} takes {}ms to seg {} char",
                     new Object[]{dic.getClass().getSimpleName(), time,
-                            data.length});
+                            datastr.length()}
+            );
 
         }
         return i; // prevent jit

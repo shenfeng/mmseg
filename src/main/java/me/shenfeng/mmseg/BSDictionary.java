@@ -38,10 +38,10 @@ public class BSDictionary implements Dictionary {
         return false;
     }
 
-    public int maxMath(char[] sen, int offset, int length) {
+    public int maxMath(char[] buffer, int offset, int length) {
         int maxLength = Math.min(length, maxWordLength);
         for (int i = maxLength; i > 1; --i) {
-            if (binarySearch(groups[i - 1], sen, offset, i)) {
+            if (binarySearch(groups[i - 1], buffer, offset, i)) {
                 return i;
             }
         }
@@ -112,8 +112,8 @@ public class BSDictionary implements Dictionary {
         }
 
         long time = System.currentTimeMillis() - start;
-        logger.info("load: {}ms, word: {}, max word length: {}",
-                new Object[] { time, wordCnt, maxWordLength });
+//        logger.info("load: {}ms, word: {}, max word length: {}",
+//                new Object[] { time, wordCnt, maxWordLength });
 
     }
 }
